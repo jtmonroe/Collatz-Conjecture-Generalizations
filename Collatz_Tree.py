@@ -46,7 +46,8 @@ def hierarchy_pos(G, root, width=1., vert_gap = 0.2, vert_loc = 0, xcenter = 0.5
        vert_loc: vertical location of root
        xcenter: horizontal location of root
        pos: a dict saying where all nodes go if they have been assigned
-       parent: parent of this branch.'''
+       parent: parent of this branch.
+       MADE BY: JOEL @ https://stackoverflow.com/questions/29586520/can-one-get-hierarchical-graphs-from-networkx-with-python-3'''
     if pos == None:
         pos = {root:(xcenter,vert_loc)}
     else:
