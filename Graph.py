@@ -35,32 +35,6 @@ class Graph(object):
         del self.edge_list[label]
         #TODO Remove all mentions of vertex from friends
 
-    def swap_vertex(self, label1, label2):
-        """This Function ought to be constant for paths and cycles.
-        For all others, all bets are off."""
-        if label1 not in self.edge_list or label2 not in self.edge_list:
-            raise LookupError("Vertex is not in Graph")
-        if label1 not in self.edge_list[label2] or\
-           label2 not in self.edge_list[label1]:
-            raise LookupError("Verticies are not adjacent")
-        set1 = self.edge_list[label1]
-        set2 = self.edge_list[label2]
-        set1, set2 = set1 - {label2}, set2 - {label1}
-        for Vertex in set1:
-            if {label1, label2} < self.edge_list[Vertex]:
-                continue
-            self.edge_list[Vertex] = self.edge_list[Vertex] - {label1}
-            self.edge_list[Vertex].add(label2)
-        for Vertex in set2:
-            if {label1, label2} < self.edge_list[Vertex]:
-                continue
-            self.edge_list[Vertex] = self.edge_list[Vertex] - {label2}
-            self.edge_list[Vertex].add(label1)
-        set1.add(label1)
-        set2.add(label2)
-        self.edge_list[label1] = set2
-        self.edge_list[label2] = set1
-
     def add_edge(self, label1, label2):
         if label1 not in self.edge_list or label2 not in self.edge_list:
             raise LookupError("Vertex is not in Graph")
