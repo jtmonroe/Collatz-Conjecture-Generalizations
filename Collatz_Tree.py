@@ -24,7 +24,7 @@ def collatz_tree(M, k = 3):
     while len(frontier) < M:
         x = frontier.pop()
         if (x - 1) % k == 0:
-            y = (x - 1)//3
+            y = (x - 1)//k
             if y not in tree:
                 tree.add_vertex(y)
                 tree.add_edge(x, y)
@@ -66,8 +66,12 @@ def hierarchy_pos(G, root, width=1., vert_gap = 0.2, vert_loc = 0, xcenter = 0.5
     return pos
 
 K = 7
+N = 10000
+FONT_SIZE = 0
+NODE_SIZE = 2
+
 list_ = []
-graph = collatz_tree(50, K)
+graph = collatz_tree(N, K)
 
 Matching_Graph = nx.Graph()
 for Vertex in graph.edge_list:
@@ -84,17 +88,20 @@ pos = hierarchy_pos(Matching_Graph, 0, width=1000, vert_gap=100)
 nx.draw_networkx_nodes(Matching_Graph, pos,
                        nodelist=list_,
                        node_color='b',
-                       node_size=600,
+                       node_size=NODE_SIZE,
                        alpha=0.6)
 
 ### NODE LABELS
 labels = {}
 for i in list_:
     labels[i] = str(i)
-nx.draw_networkx_labels(Matching_Graph, pos, labels, font_size=20)
+nx.draw_networkx_labels(Matching_Graph, pos, labels, font_size=FONT_SIZE)
+
 
 #DRAW EDGES
 nx.draw_networkx_edges(Matching_Graph, pos, width=1.0, alpha=0.5)
 
+file_name = "Collatz_Tree_K" + str(K) + "_N" + str(N) + ".png"
+
 plt.pyplot.axis('off')
-plt.pyplot.savefig("Collatz_Tree.png")
+plt.pyplot.savefig(file_name)

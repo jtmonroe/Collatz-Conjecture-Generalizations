@@ -15,11 +15,15 @@ class Queue(object):
         self.__trailer.next = self.__header
 
     def __str__(self):
+        if self.size == 0:
+            return "[ ]"
         current = self.__header
-        string = ""
-        for _ in range(self.size):
+        string = "[ "
+        for _ in range(self.size - 1):
             current = current.prev
             string += (str(current.data) + ", ")
+        current = current.prev
+        string += (str(current.data) + " ]")
         return string 
 
     def __len__(self):

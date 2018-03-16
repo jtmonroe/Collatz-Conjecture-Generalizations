@@ -50,10 +50,10 @@ def check_general_collatz(term, k = 3):
 
 if __name__ == "__main__":
     for i in range(1, 1001):
-        if check_general_collatz(i, 7):
+        if check_general_collatz(i, 5):
             print(i, "SUCCESS")
         else:
             pass
             #print(i, "FAILED")
 
-    print(check_general_collatz(78, 7))
+    print(check_general_collatz(78, 5))
