@@ -72,11 +72,12 @@ def hierarchy_pos(G, root, width=1., vert_gap = 0.2, vert_loc = 0, xcenter = 0.5
 
 
 
-K = 3
-CHILDREN = 2**(primepi(K - 1))
-N = 10000
+K = 7
+CHILDREN = 2**(primepi(K - 1) + 1)
+N = 100
 FONT_SIZE = 0
 NODE_SIZE = 2
+DPI = 1000
 
 list_ = []
 graph = general_collatz_tree(N, K)
@@ -110,6 +111,6 @@ nx.draw_networkx_labels(Matching_Graph, pos, labels, font_size=FONT_SIZE)
 nx.draw_networkx_edges(Matching_Graph, pos, width=1.0, alpha=0.5)
 
 file_name = "Collatz_Tree_K" + str(K) + "_N" + str(N) + ".png"
-
+file_path = "Graph_Images/"+file_name
 plt.pyplot.axis('off')
-plt.pyplot.savefig(file_name)
+plt.pyplot.savefig(file_path, dpi = DPI)
