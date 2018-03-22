@@ -2,42 +2,47 @@ from Graph import Graph
 from Queue import Queue
 import networkx as nx
 import matplotlib as plt
+from sympy import isprime, primepi, prevprime, nextprime
+from itertools import combinations
 
-#Pseudocode algorithm
-# Structures:
-    #1: Graph built with dict and sets
-    #2: queue for frontier nodes
-
-#Start at root 1 and take 2 functions
-    #first function: 2x
-    #Second function: if x-1 is divisible by k, then (x - 1)/k
-
-#If the second function is used, then add that node to the frontier queues
-
-#Discontinue when frontier is of a certain size
-
-def collatz_tree(M, k = 3):
+def general_collatz_tree(M, k = 3):
+    '''I am SO truly sorry for the running time
+    of this algorithm. It has no choice but to be 
+    exponential due to tree growth
+    Generalization for all Collatz Trees'''
     tree = Graph()
     tree.add_vertex(1)
     frontier = Queue()
     frontier.push(1)
+    primes = []
+    p = k
+    while True:
+        try:
+            p = prevprime(p)
+        except:
+            break
+        primes.append(p)
     while len(frontier) < M:
         x = frontier.pop()
-        if (x - 1) % k == 0:
+        for i in range(len(primes) + 1):
+            for tup in combinations(primes,i):
+                y = x
+                for prime in tup:
+                    y = y*prime
+                if y not in tree:
+                    tree.add_vertex(y)
+                    tree.add_edge(x, y)
+                    frontier.push(y)
+        if (x - 1)%k == 0:
             y = (x - 1)//k
             if y not in tree:
                 tree.add_vertex(y)
                 tree.add_edge(x, y)
                 frontier.push(y)
-        z = 2*x
-        if z not in tree:
-            tree.add_vertex(z)
-            tree.add_edge(x, z)
-            frontier.push(z)
     return tree
 
 def hierarchy_pos(G, root, width=1., vert_gap = 0.2, vert_loc = 0, xcenter = 0.5, 
-                  pos = None, parent = None):
+                  pos = None, parent = None, children = 2):
     '''If there is a cycle that is reachable from root, then this will see infinite recursion.
        G: the graph
        root: the root node of current branch
@@ -57,7 +62,7 @@ def hierarchy_pos(G, root, width=1., vert_gap = 0.2, vert_loc = 0, xcenter = 0.5
         neighbors.remove(parent)  #if directed, then parent not in neighbors.
     if len(neighbors)!=0:
         dx = width/len(neighbors) 
-        nextx = xcenter - width/2 - dx/2
+        nextx = xcenter - width/children - dx/children
         for neighbor in neighbors:
             nextx += dx
             pos = hierarchy_pos(G,neighbor, width = dx, vert_gap = vert_gap, 
@@ -65,13 +70,16 @@ def hierarchy_pos(G, root, width=1., vert_gap = 0.2, vert_loc = 0, xcenter = 0.5
                                 parent = root)
     return pos
 
-K = 7
+
+
+K = 3
+CHILDREN = 2**(primepi(K - 1))
 N = 10000
 FONT_SIZE = 0
 NODE_SIZE = 2
 
 list_ = []
-graph = collatz_tree(N, K)
+graph = general_collatz_tree(N, K)
 
 Matching_Graph = nx.Graph()
 for Vertex in graph.edge_list:
@@ -82,7 +90,7 @@ for Vertex in graph.edge_list:
     for other in graph.edge_list[Vertex]:
         Matching_Graph.add_edge(Vertex, other)
 
-pos = hierarchy_pos(Matching_Graph, 0, width=1000, vert_gap=100)
+pos = hierarchy_pos(Matching_Graph, 0, width=1000, vert_gap=100, children= CHILDREN)
 
 ###DRAW NODES
 nx.draw_networkx_nodes(Matching_Graph, pos,

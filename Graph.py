@@ -20,9 +20,7 @@ class Graph(object):
         return string
 
     def __contains__(self, elem):
-        if elem in self.edge_list:
-            return True
-        return False
+        return (elem in self.edge_list)
 
     def add_vertex(self, label):
         if label in self.edge_list:
