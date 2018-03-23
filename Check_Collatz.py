@@ -76,13 +76,12 @@ def check_range(start, end, k = 3):
 
 
 if __name__ == "__main__":
-    print(37*7 + 1)
-    print(general_collatz_trajectory(37,7))
-    print(check_general_collatz(20, k = 13))
-    start = 10
-    end = 100
-    collatz_range = check_range(start, end, k = 11)
+    print(check_general_collatz(1179, k = 13))
+    print(general_collatz_trajectory(1179, k = 13))
+    start = 0
+    end = 1000
+    collatz_range = check_range(start, end, k = 7)
     for i in range(start, end+1):
         #print(collatz_range[i])
         if not collatz_range[i]:
-            print("NUMBER FAILED")
+            print("NUMBER FAILED", i)

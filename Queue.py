@@ -43,6 +43,7 @@ class Queue(object):
         ret_data = self.__header.prev.data
         self.__header.prev.prev.next = self.__header
         self.__header.prev = self.__header.prev.prev
+        self.size -= 1
         return ret_data
 
     def peek(self):

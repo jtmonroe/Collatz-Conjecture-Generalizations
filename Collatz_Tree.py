@@ -5,15 +5,15 @@ import matplotlib as plt
 from sympy import isprime, primepi, prevprime, nextprime
 from itertools import combinations
 
-def general_collatz_tree(M, k = 3):
+def general_collatz_tree(M, k = 3, root = 1):
     '''I am SO truly sorry for the running time
     of this algorithm. It has no choice but to be 
     exponential due to tree growth
     Generalization for all Collatz Trees'''
     tree = Graph()
-    tree.add_vertex(1)
+    tree.add_vertex(root)
     frontier = Queue()
-    frontier.push(1)
+    frontier.push(root)
     primes = []
     p = k
     while True:
@@ -54,7 +54,7 @@ def hierarchy_pos(G, root, width=1., vert_gap = 0.2, vert_loc = 0, xcenter = 0.5
        parent: parent of this branch.
        MADE BY: JOEL @ https://stackoverflow.com/questions/29586520/can-one-get-hierarchical-graphs-from-networkx-with-python-3'''
     if pos == None:
-        pos = {root:(xcenter,vert_loc)}
+        pos = {root:(xcenter,vert_loc)}    
     else:
         pos[root] = (xcenter, vert_loc)
     neighbors = G.neighbors(root)
@@ -71,16 +71,17 @@ def hierarchy_pos(G, root, width=1., vert_gap = 0.2, vert_loc = 0, xcenter = 0.5
     return pos
 
 
-
+  
 K = 7
-CHILDREN = 2**(primepi(K - 1) + 1)
+CHILDREN = 2**(primepi(K - 1))
 N = 100
 FONT_SIZE = 0
 NODE_SIZE = 2
 DPI = 1000
+ROOT = 0
 
 list_ = []
-graph = general_collatz_tree(N, K)
+graph = general_collatz_tree(N, K, root=ROOT + 1)
 
 Matching_Graph = nx.Graph()
 for Vertex in graph.edge_list:
@@ -91,7 +92,7 @@ for Vertex in graph.edge_list:
     for other in graph.edge_list[Vertex]:
         Matching_Graph.add_edge(Vertex, other)
 
-pos = hierarchy_pos(Matching_Graph, 0, width=1000, vert_gap=100, children= CHILDREN)
+pos = hierarchy_pos(Matching_Graph, ROOT, width=1000, vert_gap=100, children= CHILDREN)
 
 ###DRAW NODES
 nx.draw_networkx_nodes(Matching_Graph, pos,
