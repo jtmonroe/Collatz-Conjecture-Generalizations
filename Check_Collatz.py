@@ -2,7 +2,7 @@ from sympy import isprime, primepi, prevprime, nextprime
 from math import inf
 
 
-def check_general_collatz(term, k = 3, upper_bound = 10**1000):
+def check_general_collatz(term, k = 3, upper_bound = 10**10000):
     """Generaliztion proposed by 
     Zhang Zhongfu and Yang Shiming
     and found in
@@ -31,7 +31,7 @@ def check_general_collatz(term, k = 3, upper_bound = 10**1000):
             return None
 
 
-def general_collatz_trajectory(term, k = 3, upper_bound = 10**1000):
+def general_collatz_trajectory(term, k = 3, upper_bound = 10**10000):
     """Generaliztion proposed by 
     Zhang Zhongfu and Yang Shiming
     and found in
@@ -76,12 +76,6 @@ def check_range(start, end, k = 3):
 
 
 if __name__ == "__main__":
-    print(check_general_collatz(1179, k = 13))
-    print(general_collatz_trajectory(1179, k = 13))
-    start = 0
-    end = 1000
-    collatz_range = check_range(start, end, k = 7)
-    for i in range(start, end+1):
-        #print(collatz_range[i])
-        if not collatz_range[i]:
-            print("NUMBER FAILED", i)
+    #pyprint(check_general_collatz(1179, k = 13))
+    print(general_collatz_trajectory(29, k = 11))
+   

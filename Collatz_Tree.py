@@ -22,7 +22,7 @@ def general_collatz_tree(M, k = 3, root = 1):
         except:
             break
         primes.append(p)
-    while len(frontier) < M:
+    while len(tree) < M:
         x = frontier.pop()
         for i in range(len(primes) + 1):
             for tup in combinations(primes,i):
@@ -70,48 +70,52 @@ def hierarchy_pos(G, root, width=1., vert_gap = 0.2, vert_loc = 0, xcenter = 0.5
                                 parent = root)
     return pos
 
-
-  
-K = 7
+K = 5
 CHILDREN = 2**(primepi(K - 1))
-N = 100
+M = 86
 FONT_SIZE = 0
 NODE_SIZE = 2
-DPI = 1000
+DPI = 300
 ROOT = 0
-
 list_ = []
-graph = general_collatz_tree(N, K, root=ROOT + 1)
 
-Matching_Graph = nx.Graph()
-for Vertex in graph.edge_list:
-    Matching_Graph.add_node(Vertex)
-    list_.append(Vertex)
+chosen_numbers = [5,7,9,10,11,13,14,16,17,20,21,22,23,25,26,27,30,32,34,35,36,37,39,40,41,42,44,47,49,51,52,54,56,57,58,59,61,63,64,65,66,68,71,73,76,77,79,81,83,84]
 
-for Vertex in graph.edge_list:
-    for other in graph.edge_list[Vertex]:
-        Matching_Graph.add_edge(Vertex, other)
+for M in chosen_numbers:
+    graph = general_collatz_tree(M, K, root=ROOT+1)
 
-pos = hierarchy_pos(Matching_Graph, ROOT, width=1000, vert_gap=100, children= CHILDREN)
+    Matching_Graph = nx.Graph()
+    for Vertex in graph.edge_list:
+        Matching_Graph.add_node(Vertex)
+        list_.append(Vertex)
+    for Vertex in graph.edge_list:
+        for other in graph.edge_list[Vertex]:
+            Matching_Graph.add_edge(Vertex, other)
+    pos = hierarchy_pos(Matching_Graph, ROOT, width=1000, vert_gap=100, children=CHILDREN)
 
-###DRAW NODES
-nx.draw_networkx_nodes(Matching_Graph, pos,
-                       nodelist=list_,
-                       node_color='b',
-                       node_size=NODE_SIZE,
-                       alpha=0.6)
+    ###DRAW NODES
+    nx.draw_networkx_nodes(Matching_Graph, pos,
+                        nodelist=list_,
+                        node_color='b',
+                        node_size=NODE_SIZE,
+                        alpha=0.6)
 
-### NODE LABELS
-labels = {}
-for i in list_:
-    labels[i] = str(i)
-nx.draw_networkx_labels(Matching_Graph, pos, labels, font_size=FONT_SIZE)
+    ### NODE LABELS
+    labels = {}
+    for i in list_:
+        labels[i] = str(i)
+    nx.draw_networkx_labels(Matching_Graph, pos, labels, font_size=FONT_SIZE)
 
+    #DRAW EDGES
+    nx.draw_networkx_edges(Matching_Graph, pos, width=1.0, alpha=0.5)
+    
+    if len(str(M)) == 1:
+        strM = "0" + str(M)
+    else:
+        strM = str(M)
 
-#DRAW EDGES
-nx.draw_networkx_edges(Matching_Graph, pos, width=1.0, alpha=0.5)
-
-file_name = "Collatz_Tree_K" + str(K) + "_N" + str(N) + ".png"
-file_path = "Graph_Images/"+file_name
-plt.pyplot.axis('off')
-plt.pyplot.savefig(file_path, dpi = DPI)
+    file_name = "Collatz_Tree_K" + str(K) + "_N" + strM + ".png"
+    file_path = "Graph_Images/GIF/"+file_name
+    plt.pyplot.axis('off')
+    plt.pyplot.savefig(file_path, dpi = DPI)
+    del Matching_Graph
