@@ -31,7 +31,7 @@ def check_general_collatz(term, k = 3, upper_bound = 10**10000):
             return None
 
 
-def general_collatz_trajectory(term, k = 3, upper_bound = 10**10000):
+def general_collatz_orbit(term, k = 3, upper_bound = 10**10000):
     """Generaliztion proposed by 
     Zhang Zhongfu and Yang Shiming
     and found in
@@ -43,7 +43,7 @@ def general_collatz_trajectory(term, k = 3, upper_bound = 10**10000):
     if cycle: last term = first term
     if violate upper bound: last term is inf"""
     current = term
-    trajectory = [current]
+    orbit = [current]
     while True:
         divisor_success = False
         p = k
@@ -57,15 +57,22 @@ def general_collatz_trajectory(term, k = 3, upper_bound = 10**10000):
                 current = current//p
         if not divisor_success:
             current = k*current + 1
-        if current in trajectory:
-            trajectory.append(current)
-            return trajectory
-        trajectory.append(current)
+        if current in orbit:
+            orbit.append(current)
+            return orbit
+        orbit.append(current)
         if current == 1:
-            return trajectory
+            return orbit
         if current > upper_bound:
-            trajectory.append(inf)
-            return trajectory
+            orbit.append(inf)
+            return orbit
+
+
+def total_stopping_time(term, k = 3, upper_bound = 10**10000):
+    orbit = general_collatz_orbit(term, k, upper_bound)
+    if orbit[len(orbit) - 1] != inf and orbit[len(orbit) - 1] != orbit[0]:
+        return len(orbit)
+    return inf
 
 
 def check_range(start, end, k = 3):
@@ -73,9 +80,3 @@ def check_range(start, end, k = 3):
     for i in range(start, end + 1):
         collatz_dict[i] = check_general_collatz(i, k)
     return collatz_dict
-
-
-if __name__ == "__main__":
-    #pyprint(check_general_collatz(1179, k = 13))
-    print(general_collatz_trajectory(29, k = 11))
-   
