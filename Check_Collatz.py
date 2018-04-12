@@ -30,6 +30,22 @@ def check_general_collatz(term, k = 3, upper_bound = 10**10000):
         if current > upper_bound:
             return None
 
+def general_collatz_single_iteration(term, k = 3):
+    current = term
+    divisor_success = False
+    p = k
+    while True:
+        try:
+            p = prevprime(p)
+        except:
+            break
+        if current % p == 0:
+            divisor_success = True
+            current = current//p
+    if not divisor_success:
+        current = k*current + 1
+    return current
+
 
 def general_collatz_orbit(term, k = 3, upper_bound = 10**10000):
     """Generaliztion proposed by 

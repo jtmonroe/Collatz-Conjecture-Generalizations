@@ -58,6 +58,14 @@ class NumTheory(object):
             x = a//b
             (a, b) = (b, a - x*b)
             return NumTheory.gcd(a, b)
+    
+    @classmethod
+    def find_inverse_mod(cls, a, mod):
+        for test in range(1, mod):
+            if a*test % mod == 1:
+                return test
+        return 0
+            
 
     def Euler_Phi_Function(self):
         number = self.number
